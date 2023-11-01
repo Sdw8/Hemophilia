@@ -68,6 +68,7 @@ namespace Hemophilia
             radioButton1.Checked = true;
             radioButton3.Checked = true;
             checkBox1.Checked = true;
+            this.ActiveControl = textBox2;
         }
 
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
