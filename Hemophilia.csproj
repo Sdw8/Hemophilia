@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>Hemophilia</RootNamespace>
+    <AssemblyName>Hemophilia</AssemblyName>
+    <!-- Sets the .exe file icon (visible in Explorer and taskbar) -->
+    <ApplicationIcon>bloodDrop.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Embed icon as WPF resource so Window.Icon can reference it -->
+    <Resource Include="bloodDrop.ico"/>
+  </ItemGroup>
+</Project>

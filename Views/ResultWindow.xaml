@@ -1,0 +1,164 @@
+<Window x:Class="Hemophilia.Views.ResultWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Результат расчёта"
+        Icon="/bloodDrop.ico"
+        Width="580" SizeToContent="Height"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterOwner"
+        Background="#0D1117">
+
+    <Window.Resources>
+        <Style x:Key="MetaLbl" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#8B949E"/>
+            <Setter Property="FontSize"   Value="10"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin"     Value="0,0,0,3"/>
+        </Style>
+        <Style x:Key="MetaVal" TargetType="TextBlock">
+            <Setter Property="Foreground"   Value="#CDD9E5"/>
+            <Setter Property="FontSize"     Value="13"/>
+            <Setter Property="FontWeight"   Value="SemiBold"/>
+            <Setter Property="Margin"       Value="0,0,0,12"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+        <Style x:Key="ColHdr" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#6E7681"/>
+            <Setter Property="FontSize"   Value="10"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+    </Window.Resources>
+
+    <StackPanel Margin="22">
+
+        <!-- Header -->
+        <TextBlock Text="РЕЗУЛЬТАТ" FontSize="10" FontWeight="SemiBold"
+                   Foreground="#2D7DD2" Margin="0,0,0,4"/>
+        <TextBlock Text="Доза концентрата фактора свёртывания"
+                   FontSize="19" FontWeight="Bold" Foreground="#E6EDF3" Margin="0,0,0,16"/>
+
+        <!-- Meta -->
+        <Border Background="#161B22" CornerRadius="10" Padding="16,13"
+                BorderBrush="#30363D" BorderThickness="1" Margin="0,0,0,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/><ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/><RowDefinition/><RowDefinition/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Grid.Column="0">
+                    <TextBlock Text="ТИП ГЕМОФИЛИИ"    Style="{StaticResource MetaLbl}"/>
+                    <TextBlock Text="{Binding HemophiliaLabel}" Style="{StaticResource MetaVal}"/>
+                </StackPanel>
+                <StackPanel Grid.Row="0" Grid.Column="1">
+                    <TextBlock Text="ТИП КРОВОТЕЧЕНИЯ"  Style="{StaticResource MetaLbl}"/>
+                    <TextBlock Text="{Binding BleedingLabel}"   Style="{StaticResource MetaVal}"/>
+                </StackPanel>
+                <StackPanel Grid.Row="1" Grid.Column="0">
+                    <TextBlock Text="ВЕС ПАЦИЕНТА"      Style="{StaticResource MetaLbl}"/>
+                    <TextBlock Text="{Binding WeightLabel}"     Style="{StaticResource MetaVal}"/>
+                </StackPanel>
+                <StackPanel Grid.Row="1" Grid.Column="1">
+                    <TextBlock Text="ИСХОДНЫЙ УРОВЕНЬ"  Style="{StaticResource MetaLbl}"/>
+                    <TextBlock Text="{Binding CurrentLevel}"    Style="{StaticResource MetaVal}"/>
+                </StackPanel>
+                <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+                    <TextBlock Text="ПРОТОКОЛ"           Style="{StaticResource MetaLbl}"/>
+                    <TextBlock Text="{Binding ProtocolLabel}"   Style="{StaticResource MetaVal}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Results table
+             Col 0 — Фаза:         170px  (longest "После операции (дн. 7–14)" ≈ 162px)
+             Col 1 — Доза:         *      (longest "2 800 — 3 500 МЕ" ≈ 126px at bold 17)
+             Col 2 — Пиковый ур.:   70px  ("80–100%" = 44px — plenty of space)
+             Col 3 — Дней:          48px
+             Total content: 170 + ~140 + 70 + 48 = 428 + margins 44 = 472px < 580px window
+        -->
+        <Border Background="#161B22" CornerRadius="10"
+                BorderBrush="#30363D" BorderThickness="1" Margin="0,0,0,10">
+            <StackPanel>
+                <Grid Margin="16,12,16,9">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="170"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="70"/>
+                        <ColumnDefinition Width="40"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="ФАЗА"     Style="{StaticResource ColHdr}"/>
+                    <TextBlock Grid.Column="1" Text="ДОЗА"     Style="{StaticResource ColHdr}"/>
+                    <TextBlock Grid.Column="2" Text="ПИКОВЫЙ"  Style="{StaticResource ColHdr}"/>
+                    <TextBlock Grid.Column="3" Text="ДНЕЙ"     Style="{StaticResource ColHdr}"/>
+                </Grid>
+                <Rectangle Height="1" Fill="#30363D" Margin="16,0"/>
+
+                <ItemsControl ItemsSource="{Binding Phases}" Margin="0,0,0,6">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="16,0,16,0" Height="42">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="170"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="40"/>
+                                </Grid.ColumnDefinitions>
+                                <Rectangle Grid.ColumnSpan="4" Height="1" Fill="#21262D"
+                                           VerticalAlignment="Bottom"/>
+                                <TextBlock Grid.Column="0" Text="{Binding Label}"
+                                           Foreground="#8B949E" FontSize="12"
+                                           TextWrapping="NoWrap" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="{Binding DoseRange}"
+                                           Foreground="#58A6FF" FontSize="16" FontWeight="Bold"
+                                           TextWrapping="NoWrap" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="2" Text="{Binding TargetRange}"
+                                           Foreground="#CDD9E5" FontSize="12"
+                                           TextWrapping="NoWrap" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="3" Text="{Binding Duration}"
+                                           Foreground="#8B949E" FontSize="12"
+                                           TextWrapping="NoWrap" VerticalAlignment="Center"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </Border>
+
+        <!-- Formula -->
+        <Border Background="#161B22" CornerRadius="8" Padding="13,9"
+                BorderBrush="#21262D" BorderThickness="1" Margin="0,0,0,10">
+            <StackPanel>
+                <TextBlock Text="ПРИМЕНЁННАЯ ФОРМУЛА" Foreground="#8B949E"
+                           FontSize="10" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                <TextBlock Text="{Binding FormulaUsed}" Foreground="#6E7681"
+                           FontSize="11" TextWrapping="Wrap"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Disclaimer -->
+        <TextBlock TextWrapping="Wrap" FontSize="11" Foreground="#484F58" Margin="0,0,0,14"
+                   Text="⚠  Расчёт основан на Руководстве ВФГ (3-е изд.), Таблица 7-2. Носит исключительно справочный характер. Окончательное решение о дозировке принимает лечащий врач."/>
+
+        <!-- Close -->
+        <Button HorizontalAlignment="Right" Click="Close_Click"
+                Padding="22,9" FontSize="13" FontWeight="SemiBold"
+                Foreground="#CDD9E5" Cursor="Hand" BorderThickness="0">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="bg" Background="#21262D" CornerRadius="7"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="bg" Property="Background" Value="#2D7DD2"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+            <TextBlock Text="Закрыть" Foreground="#CDD9E5"/>
+        </Button>
+
+    </StackPanel>
+</Window>
